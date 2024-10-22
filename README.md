@@ -1,6 +1,6 @@
-# Pizza Restaurant Web Application
+# Pizza-Pop-Up Web Application
 
-A full-stack web application for a pizza restaurant that allows customers to view the menu, create orders, and manage their profiles.
+A full-stack web application for a pizza restaurant (Steady Habits Pizza) that allows customers to view the menu, create orders, and manage their profiles.
 
 ## Features
 
