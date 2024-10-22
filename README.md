@@ -35,7 +35,7 @@ A full-stack web application for a pizza restaurant (Steady Habits Pizza) that a
 1. Clone the repository
 ```bash
 git clone [git@github.com:jeremywhitney/pizza-pop-up-client.git]
-cd pizza-restaurant
+cd pizza-pop-up-client
 ```
 2. Install dependencies
 ```bash
