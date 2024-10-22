@@ -48,12 +48,12 @@ npm run dev
 
 ### Project Structure
 src/
-    components/      # Reusable components
-    routes/          # Page components
-    hooks/           # Custom hooks
-    utils/           # Utility functions
-    lib/             # Configuration files
-    assets/          # Static assets
+- components/      # Reusable components
+- routes/          # Page components
+- hooks/           # Custom hooks
+- utils/           # Utility functions
+- lib/             # Configuration files
+- assets/          # Static assets
 
 ### Available Scripts
 ```bash
