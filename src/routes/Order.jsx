@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useProducts } from "../hooks/useProducts";
+import { useModal } from "../contexts/ModalContext";
 import ProductGrid from "../components/products/ProductGrid";
+import AddToCartModal from "../components/modals/AddToCartModal";
 
 const Order = () => {
   const { data: products, isLoading, error } = useProducts();
+  const { showModal } = useModal();
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   if (isLoading) {
@@ -32,8 +35,7 @@ const Order = () => {
       : mainProducts.filter((p) => p.category.name === selectedCategory);
 
   const handleAddToCart = (product) => {
-    // TODO: Implement add to cart functionality
-    console.log("Adding to cart:", product);
+    showModal(<AddToCartModal product={product} toppings={toppings} />);
   };
 
   // Function to scroll to category section
@@ -51,7 +53,7 @@ const Order = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-8">
-      <div className="mb-8 sticky top-0 bg-white z-10 pb-4">
+      <div className="mb-8 sticky top-0 bg-white z-30 pb-4">
         <h1 className="text-3xl font-bold mb-6">Order Online</h1>
 
         {/* Category Filter */}
