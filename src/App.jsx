@@ -14,8 +14,8 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ModalProvider>
-        <Router>
+      <Router>
+        <ModalProvider>
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -31,8 +31,9 @@ function App() {
               />
             </Routes>
           </Layout>
-        </Router>
-      </ModalProvider>
+        </ModalProvider>
+      </Router>
+
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
