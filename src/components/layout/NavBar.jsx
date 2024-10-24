@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { useModal } from "../../contexts/ModalContext";
+import { useAuth } from "../../hooks/useAuth";
 import LoginModal from "../auth/LoginModal";
 import RegisterModal from "../auth/RegisterModal";
 import api from "../../lib/axios";
@@ -8,7 +10,8 @@ import Button from "../shared/Button";
 const Navbar = () => {
   const navigate = useNavigate();
   const { showModal } = useModal();
-  const token = localStorage.getItem("token");
+  const queryClient = useQueryClient();
+  const { data: auth } = useAuth();
 
   const handleLogin = () => {
     showModal(<LoginModal />);
@@ -21,6 +24,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     delete api.defaults.headers.common["Authorization"];
+    queryClient.setQueryData(["auth"], { isAuthenticated: false, user: null });
     navigate("/");
   };
 
@@ -40,7 +44,7 @@ const Navbar = () => {
             <Link to="/cart" className="hover:text-gray-600">
               Cart
             </Link>
-            {token ? (
+            {auth?.isAuthenticated ? (
               <>
                 <Link to="/profile" className="hover:text-gray-600">
                   Profile

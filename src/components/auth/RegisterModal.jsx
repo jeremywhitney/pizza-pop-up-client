@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../../contexts/ModalContext";
 import Modal from "../shared/Modal";
@@ -9,6 +9,7 @@ import api from "../../lib/axios";
 const RegisterModal = () => {
   const navigate = useNavigate();
   const { hideModal } = useModal();
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -23,14 +24,18 @@ const RegisterModal = () => {
   const registerMutation = useMutation({
     mutationFn: (userData) => api.post("register", userData),
     onSuccess: (response) => {
-      // Store the token
       localStorage.setItem("token", response.data.token);
-      // Update axios default headers
       api.defaults.headers.common[
         "Authorization"
       ] = `Token ${response.data.token}`;
+
+      queryClient.setQueryData(["auth"], {
+        isAuthenticated: true,
+        user: response.data.profile,
+      });
+
       hideModal();
-      navigate("/profile");
+      navigate("/");
     },
     onError: (error) => {
       setError(
