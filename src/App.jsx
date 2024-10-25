@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ModalProvider } from "./contexts/ModalContext";
+import { setupInterceptors } from "./lib/axios";
 import Layout from "./components/layout/Layout";
 import Home from "./routes/Home";
 import Order from "./routes/Order";
@@ -10,6 +11,7 @@ import Profile from "./routes/Profile";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 
 const queryClient = new QueryClient();
+setupInterceptors(queryClient);
 
 function App() {
   return (

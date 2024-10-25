@@ -7,30 +7,43 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use(
-  (config) => {
-    console.log("Outgoing Request:", {
-      url: config.url,
-      method: config.method,
-      headers: config.headers,
-      data: config.data,
-    });
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// Function to set up interceptors that takes queryClient as a parameter
+export const setupInterceptors = (queryClient) => {
+  // Request interceptor to attach the token if it exists
+  api.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        config.headers.Authorization = `Token ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
-api.interceptors.response.use(
-  (response) => {
-    console.log("Response:", response);
-    return response;
-  },
-  (error) => {
-    console.log("Response Error:", error.response);
-    return Promise.reject(error);
-  }
-);
+  // Response interceptor to handle common errors
+  api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      console.error("API Error:", error.response?.data);
+
+      // Handle auth errors
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        delete api.defaults.headers.common["Authorization"];
+
+        // Now we can safely use the queryClient passed in
+        queryClient.invalidateQueries(["auth"]);
+
+        // Optionally, you could also reset other queries if needed
+        // queryClient.resetQueries(['cart', 'orders', 'profile']);
+      }
+
+      return Promise.reject(error);
+    }
+  );
+};
 
 export default api;
