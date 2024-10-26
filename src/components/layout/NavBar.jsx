@@ -2,8 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useModal } from "../../contexts/ModalContext";
 import { useAuth } from "../../hooks/useAuth";
-import LoginModal from "../auth/LoginModal";
-import RegisterModal from "../auth/RegisterModal";
 import api from "../../lib/axios";
 import Button from "../shared/Button";
 
@@ -14,11 +12,17 @@ const Navbar = () => {
   const { data: auth } = useAuth();
 
   const handleLogin = () => {
-    showModal(<LoginModal />);
+    showModal({
+      component: "LoginModal",
+      props: {},
+    });
   };
 
   const handleRegister = () => {
-    showModal(<RegisterModal />);
+    showModal({
+      component: "RegisterModal",
+      props: {},
+    });
   };
 
   const handleLogout = () => {

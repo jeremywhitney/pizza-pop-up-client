@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useProducts } from "../hooks/useProducts";
 import { useModal } from "../contexts/ModalContext";
 import ProductGrid from "../components/products/ProductGrid";
-import AddToCartModal from "../components/modals/AddToCartModal";
 
 const Order = () => {
   const { data: products, isLoading, error } = useProducts();
@@ -35,7 +34,13 @@ const Order = () => {
       : mainProducts.filter((p) => p.category.name === selectedCategory);
 
   const handleAddToCart = (product) => {
-    showModal(<AddToCartModal product={product} toppings={toppings} />);
+    showModal({
+      component: "AddToCartModal",
+      props: {
+        product,
+        toppings,
+      },
+    });
   };
 
   // Function to scroll to category section

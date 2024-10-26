@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { useModal } from "../../contexts/ModalContext";
+import { useCartStore } from "../../hooks/useCartStore";
 import Button from "../shared/Button";
 import Modal from "../shared/Modal";
 
@@ -16,8 +17,8 @@ const ToppingSelector = ({ toppings, selectedToppings, onToppingChange }) => {
           >
             <input
               type="checkbox"
-              checked={selectedToppings.includes(topping.id)}
-              onChange={() => onToppingChange(topping.id)}
+              checked={selectedToppings.some((t) => t.id === topping.id)}
+              onChange={() => onToppingChange(topping)}
               className="rounded border-gray-300 text-red-600 focus:ring-red-500"
             />
             <span>{topping.name}</span>
@@ -28,10 +29,17 @@ const ToppingSelector = ({ toppings, selectedToppings, onToppingChange }) => {
   );
 };
 
-const AddToCartModal = ({ product, toppings = [] }) => {
+const AddToCartModal = ({
+  product,
+  toppings = [],
+  initialQuantity = 1,
+  initialToppings = [],
+  isEditing = false,
+}) => {
   const { hideModal } = useModal();
-  const [quantity, setQuantity] = useState(1);
-  const [selectedToppings, setSelectedToppings] = useState([]);
+  const { addItem, updateItem } = useCartStore();
+  const [quantity, setQuantity] = useState(initialQuantity);
+  const [selectedToppings, setSelectedToppings] = useState(initialToppings);
 
   const basePrice = product.price;
   const toppingsPrice = selectedToppings.length * 3;
@@ -44,35 +52,42 @@ const AddToCartModal = ({ product, toppings = [] }) => {
     }
   };
 
-  const handleToppingToggle = (toppingId) => {
+  const handleToppingToggle = (topping) => {
     setSelectedToppings((current) =>
-      current.includes(toppingId)
-        ? current.filter((id) => id !== toppingId)
-        : [...current, toppingId]
+      current.some((t) => t.id === topping.id)
+        ? current.filter((t) => t.id !== topping.id)
+        : [...current, topping]
     );
   };
 
   const handleAddToCart = async () => {
-    // TODO: Implement order creation once we have API details
-    console.log({
-      product: product.id,
-      quantity,
+    // Create the complete product object with all necessary data
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: quantity,
       toppings: selectedToppings,
-      totalPrice,
-    });
+    };
+
+    if (isEditing) {
+      updateItem(product.id, cartItem);
+    } else {
+      addItem(cartItem);
+    }
+
     hideModal();
-    // TODO: Navigate to cart
   };
 
   return (
-    <Modal title="Add to Cart">
+    <Modal title={isEditing ? "Edit Cart Item" : "Add to Cart"}>
       <div className="space-y-6">
         {/* Product Info */}
         <div className="flex gap-4">
           <div className="w-1/3">
-            {product.image ? (
+            {product.image_path ? (
               <img
-                src={product.image}
+                src={product.image_path}
                 alt={product.name}
                 className="w-full rounded-lg object-cover"
               />
@@ -116,7 +131,7 @@ const AddToCartModal = ({ product, toppings = [] }) => {
         </div>
 
         {/* Toppings Selector (only for pizzas) */}
-        {product.category.name === "Pizza" && toppings.length > 0 && (
+        {product.category?.name === "Pizza" && toppings.length > 0 && (
           <ToppingSelector
             toppings={toppings}
             selectedToppings={selectedToppings}
@@ -126,7 +141,7 @@ const AddToCartModal = ({ product, toppings = [] }) => {
 
         {/* Add to Cart Button */}
         <Button onClick={handleAddToCart} className="w-full text-lg py-3">
-          Add to Cart - ${totalPrice.toFixed(2)}
+          {isEditing ? "Update Cart" : "Add to Cart"} - ${totalPrice.toFixed(2)}
         </Button>
       </div>
     </Modal>
