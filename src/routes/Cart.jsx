@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useModal } from "../contexts/ModalContext";
 import Button from "../components/shared/Button";
 import CartLineItem from "../components/cart/CartLineItem";
-// import CheckoutModal from "./CheckoutModal";
+
 
 const EmptyCart = () => {
   const navigate = useNavigate();
@@ -13,10 +13,10 @@ const EmptyCart = () => {
     <div className="text-center py-12">
       <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
       <p className="text-gray-600 mb-6">
-        Add some delicious items to your cart!
+        Let's order some pizza!
       </p>
       <Button onClick={() => navigate("/place_order")}>
-        Continue Shopping
+        Start Order
       </Button>
     </div>
   );

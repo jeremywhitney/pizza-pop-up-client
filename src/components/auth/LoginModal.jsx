@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { useModal } from "../../contexts/ModalContext";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
 import api from "../../lib/axios";
 
 const LoginModal = () => {
-  const navigate = useNavigate();
   const { hideModal } = useModal();
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
@@ -17,20 +15,23 @@ const LoginModal = () => {
   const [error, setError] = useState("");
 
   const loginMutation = useMutation({
-    mutationFn: (credentials) => api.post("login", credentials),
-    onSuccess: (response) => {
-      localStorage.setItem("token", response.data.token);
+    mutationFn: async (credentials) => {
+      const loginResponse = await api.post("login", credentials);
+      localStorage.setItem("token", loginResponse.data.token);
       api.defaults.headers.common[
         "Authorization"
-      ] = `Token ${response.data.token}`;
+      ] = `Token ${loginResponse.data.token}`;
 
+      const profileResponse = await api.get("/profile");
+      return profileResponse;
+    },
+    onSuccess: (response) => {
       queryClient.setQueryData(["auth"], {
         isAuthenticated: true,
-        user: response.data.profile,
+        user: response.data,
       });
 
       hideModal();
-      navigate("/");
     },
     onError: (error) => {
       setError(

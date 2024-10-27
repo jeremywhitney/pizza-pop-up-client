@@ -16,7 +16,7 @@ export const useAuth = () => {
         const response = await api.get("/profile");
         return {
           isAuthenticated: true,
-          user: response.data.profile,
+          user: response.data,
         };
       } catch (error) {
         localStorage.removeItem("token");
