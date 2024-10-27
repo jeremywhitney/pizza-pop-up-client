@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useCallback } from "react";
 import LoginModal from "../components/auth/LoginModal";
 import RegisterModal from "../components/auth/RegisterModal";
-import AddToCartModal from "../components/modals/AddToCartModal";
+import AddToCartModal from "../components/cart/AddToCartModal";
+import CheckoutModal from "../components/cart/CheckoutModal";
 
 // Map of available modals, need to add CheckoutModal once created
 const MODAL_COMPONENTS = {
   AddToCartModal,
+  CheckoutModal,
   LoginModal,
   RegisterModal,
 };
