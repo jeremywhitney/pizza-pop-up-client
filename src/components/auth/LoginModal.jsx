@@ -22,7 +22,7 @@ const LoginModal = () => {
         "Authorization"
       ] = `Token ${loginResponse.data.token}`;
 
-      const profileResponse = await api.get("/profile");
+      const profileResponse = await api.get("profile");
       return profileResponse;
     },
     onSuccess: (response) => {
