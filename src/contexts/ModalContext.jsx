@@ -3,6 +3,10 @@ import LoginModal from "../components/auth/LoginModal";
 import RegisterModal from "../components/auth/RegisterModal";
 import AddToCartModal from "../components/cart/AddToCartModal";
 import CheckoutModal from "../components/cart/CheckoutModal";
+import PaymentModal from "../components/profile/PaymentModal";
+import OrderDetailsModal from "../components/profile/OrderDetailsModal";
+import OrderConfirmationModal from "../components/cart/OrderConfirmationModal";
+import DeletePaymentModal from "../components/profile/DeletePaymentModal";
 
 // Map of available modals, need to add CheckoutModal once created
 const MODAL_COMPONENTS = {
@@ -10,6 +14,10 @@ const MODAL_COMPONENTS = {
   CheckoutModal,
   LoginModal,
   RegisterModal,
+  PaymentModal,
+  OrderDetailsModal,
+  OrderConfirmationModal,
+  DeletePaymentModal,
 };
 
 const ModalContext = createContext(null);

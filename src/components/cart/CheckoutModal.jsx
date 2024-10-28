@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCartStore } from "../../hooks/useCartStore";
 import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../contexts/ModalContext";
@@ -11,8 +10,8 @@ import api from "../../lib/axios";
 const formatCardNumber = (number) => `•••• ${number.slice(-4)}`;
 
 const CheckoutModal = () => {
-  const navigate = useNavigate();
-  const { hideModal } = useModal();
+  const queryClient = useQueryClient();
+  const { showModal, hideModal } = useModal();
   const { items, getTotal, clearCart } = useCartStore();
   const { data: auth } = useAuth();
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
@@ -33,11 +32,31 @@ const CheckoutModal = () => {
       const response = await api.post("/orders", orderData);
       return response.data;
     },
-    onSuccess: () => {
+
+    onSuccess: (data) => {
+      // Update the auth query data to include the new order
+      queryClient.setQueryData(["auth"], (old) => {
+        if (!old?.user?.orders) return old; // Guard against missing data
+        return {
+          ...old,
+          user: {
+            ...old.user,
+            orders: [data, ...old.user.orders],
+          },
+        };
+      });
+
+      // Show the confirmation dialog
+      showModal({
+        component: "OrderConfirmationModal",
+        props: {
+          order: data,
+        },
+      });
+
       clearCart();
-      hideModal();
-      navigate("/");
     },
+
     onError: (err) => {
       console.error("Order creation error:", {
         error: err,
@@ -72,7 +91,23 @@ const CheckoutModal = () => {
       <Modal title="Checkout">
         <div className="p-4 text-center">
           <p className="text-red-600 mb-4">No payment methods available.</p>
-          <Button onClick={hideModal}>Close</Button>
+          <div className="flex justify-center gap-3">
+            <Button onClick={hideModal} variant="secondary">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                showModal({
+                  component: "PaymentModal",
+                  props: {
+                    fromCheckout: true,
+                  },
+                });
+              }}
+            >
+              Add Payment Method
+            </Button>
+          </div>
         </div>
       </Modal>
     );
