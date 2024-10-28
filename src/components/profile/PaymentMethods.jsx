@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../hooks/useAuth.js";
-import * as Dialog from "@radix-ui/react-dialog";
+import { useModal } from "../../contexts/ModalContext.jsx";
 import { Pencil, Trash2 } from "lucide-react";
 import Button from "../shared/Button";
 import api from "../../lib/axios";
@@ -10,7 +9,7 @@ export const PaymentMethods = () => {
   const { data: auth } = useAuth();
   const payments = auth?.user?.payments || [];
   const queryClient = useQueryClient();
-  const [paymentToDelete, setPaymentToDelete] = useState(null);
+  const { showModal } = useModal();
 
   const deletePaymentMutation = useMutation({
     mutationFn: async (paymentId) => {
@@ -25,7 +24,6 @@ export const PaymentMethods = () => {
           payments: old.user.payments.filter((p) => p.id !== paymentId),
         },
       }));
-      setPaymentToDelete(null);
     },
   });
 
@@ -39,11 +37,37 @@ export const PaymentMethods = () => {
     });
   };
 
+  const handleAddPayment = () => {
+    showModal({
+      component: "PaymentModal",
+      props: {},
+    });
+  };
+
+  const handleEditPayment = (payment) => {
+    showModal({
+      component: "PaymentModal",
+      props: {
+        paymentToEdit: payment,
+      },
+    });
+  };
+
+  const handleDeleteClick = (payment) => {
+    showModal({
+      component: "DeletePaymentModal",
+      props: {
+        payment,
+        onConfirm: deletePaymentMutation.mutate,
+      },
+    });
+  };
+
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Payment Methods</h2>
-        <Button size="sm" onClick={() => {}}>
+        <Button size="sm" onClick={handleAddPayment}>
           Add Payment
         </Button>
       </div>
@@ -69,13 +93,17 @@ export const PaymentMethods = () => {
                 </td>
                 <td className="py-3 px-4">
                   <div className="flex justify-end gap-2">
-                    <Button size="sm" variant="secondary" onClick={() => {}}>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => handleEditPayment(payment)}
+                    >
                       <Pencil className="w-4 h-4" />
                     </Button>
                     <Button
                       size="sm"
                       variant="secondary"
-                      onClick={() => setPaymentToDelete(payment)}
+                      onClick={() => handleDeleteClick(payment)}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -86,38 +114,6 @@ export const PaymentMethods = () => {
           </tbody>
         </table>
       </div>
-
-      <Dialog.Root
-        open={!!paymentToDelete}
-        onOpenChange={() => setPaymentToDelete(null)}
-      >
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-          <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-6 max-w-md w-full">
-            <Dialog.Title className="text-xl font-bold mb-4">
-              Delete Payment Method
-            </Dialog.Title>
-            <Dialog.Description className="text-gray-600 mb-6">
-              Are you sure you want to delete this payment method? This action
-              cannot be undone.
-            </Dialog.Description>
-            <div className="flex justify-end gap-3">
-              <Button
-                variant="secondary"
-                onClick={() => setPaymentToDelete(null)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="primary"
-                onClick={() => deletePaymentMutation.mutate(paymentToDelete.id)}
-              >
-                Delete
-              </Button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
     </section>
   );
 };

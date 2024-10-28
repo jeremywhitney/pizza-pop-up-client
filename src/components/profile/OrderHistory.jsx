@@ -2,11 +2,12 @@ import { useState } from "react";
 import { ArrowUpDown } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.js";
 import Button from "../shared/Button";
+import { useModal } from "../../contexts/ModalContext.jsx";
 
 export const OrderHistory = () => {
   const { data: auth } = useAuth();
   const orders = auth?.user?.orders || [];
-
+  const { showModal } = useModal();
   const [sortDirection, setSortDirection] = useState("desc");
 
   const sortedOrders = [...orders].sort((a, b) => {
@@ -74,14 +75,19 @@ export const OrderHistory = () => {
               <tr key={order.id} className="border-b hover:bg-gray-50">
                 <td className="py-3 px-4">
                   <button
-                    onClick={() => {}}
+                    onClick={() =>
+                      showModal({
+                        component: "OrderDetailsModal",
+                        props: { order, showTitle: true },
+                      })
+                    }
                     className="text-red-600 hover:underline"
                   >
                     #{order.id}
                   </button>
                 </td>
                 <td className="py-3 px-4">{formatDate(order.created_date)}</td>
-                <td className="py-3 px-4">{order.payment.merchant_name}</td>
+                <td className="py-3 px-4">{order.payment ? order.payment.merchant_name : 'Deleted payment method'}</td>
                 <td className="py-3 px-4">
                   <span
                     className={`px-2 py-1 rounded-full text-sm font-medium ${getStatusStyle(
