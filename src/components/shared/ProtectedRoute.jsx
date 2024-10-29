@@ -7,7 +7,7 @@ const ProtectedRoute = ({
   requireCustomer = false,
 }) => {
   const { data: auth, isLoading } = useAuth();
-  const location = useLocation;
+  const location = useLocation();
 
   if (isLoading) {
     return <div>Loading...</div>;

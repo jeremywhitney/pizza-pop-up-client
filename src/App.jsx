@@ -23,24 +23,8 @@ function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
-
-              {/* Customer-Only Routes */}
-              <Route
-                path="/place_order"
-                element={
-                  <ProtectedRoute requireCustomer>
-                    <Order />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/cart"
-                element={
-                  <ProtectedRoute requireCustomer>
-                    <Cart />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/place_order" element={<Order />} />
+              <Route path="/cart" element={<Cart />} />
 
               {/* Employee Routes */}
               <Route
