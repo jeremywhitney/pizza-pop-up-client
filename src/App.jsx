@@ -9,6 +9,7 @@ import Order from "./routes/Order";
 import Cart from "./routes/Cart";
 import Profile from "./routes/Profile";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
+import Dashboard from "./routes/Dashboard";
 
 const queryClient = new QueryClient();
 setupInterceptors(queryClient);
@@ -20,9 +21,22 @@ function App() {
         <ModalProvider>
           <Layout>
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/place_order" element={<Order />} />
               <Route path="/cart" element={<Cart />} />
+
+              {/* Employee Routes */}
+              <Route
+                path="/employee_dashboard"
+                element={
+                  <ProtectedRoute requireStaff>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Shared Protected Routes */}
               <Route
                 path="/profile"
                 element={
@@ -35,7 +49,6 @@ function App() {
           </Layout>
         </ModalProvider>
       </Router>
-
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
