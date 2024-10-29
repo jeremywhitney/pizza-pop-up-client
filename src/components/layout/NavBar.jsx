@@ -44,6 +44,9 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="flex items-center space-x-4">
+              <Link to="/employee_dashboard" className="hover:text-gray-600">
+                Employee Dashboard
+              </Link>
               <Link to="/profile" className="hover:text-gray-600">
                 Profile
               </Link>

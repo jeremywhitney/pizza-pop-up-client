@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CreditCard, Calendar } from "lucide-react";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
 import { useModal } from "../../contexts/ModalContext";
-import api from "../../lib/axios";
+import { usePayments } from "../../hooks/usePayments";
 
 const PaymentModal = ({
   paymentToEdit = null,
   onSuccess,
   fromCheckout = false,
 }) => {
-  const queryClient = useQueryClient();
+  const { createPayment, updatePayment } = usePayments();
   const { showModal, hideModal } = useModal();
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -25,47 +24,6 @@ const PaymentModal = ({
   });
 
   const isEditMode = !!paymentToEdit;
-
-  const paymentMutation = useMutation({
-    mutationFn: async (data) => {
-      if (isEditMode) {
-        const response = await api.patch(`/payments/${paymentToEdit.id}`, {
-          expiration_date: data.expiration_date,
-        });
-        return response.data;
-      } else {
-        const response = await api.post("/payments", data);
-        return response.data;
-      }
-    },
-
-    onSuccess: (data) => {
-      queryClient.setQueryData(["auth"], (old) => ({
-        ...old,
-        user: {
-          ...old.user,
-          payments: isEditMode
-            ? old.user.payments.map((p) =>
-                p.id === paymentToEdit.id ? data : p
-              )
-            : [...old.user.payments, data],
-        },
-      }));
-      if (fromCheckout) {
-        // If coming from checkout, show the CheckoutModal again
-        showModal({ component: "CheckoutModal" });
-      }
-      hideModal();
-      if (onSuccess) onSuccess();
-    },
-
-    onError: (err) => {
-      console.error("Payment operation error:", err);
-      setError(
-        err.response?.data?.message || "An error occurred. Please try again."
-      );
-    },
-  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,7 +46,29 @@ const PaymentModal = ({
       expiration_date: formData.expiration_date.toISOString().split("T")[0],
     };
 
-    paymentMutation.mutate(submitData);
+    const mutation = isEditMode ? updatePayment : createPayment;
+    const mutationData = isEditMode
+      ? {
+          id: paymentToEdit.id,
+          data: { expiration_date: submitData.expiration_date },
+        }
+      : submitData;
+
+    mutation.mutate(mutationData, {
+      onSuccess: (data) => {
+        if (fromCheckout) {
+          showModal({ component: "CheckoutModal" });
+        }
+        hideModal();
+        if (onSuccess) onSuccess();
+      },
+      onError: (err) => {
+        console.error("Payment operation error:", err);
+        setError(
+          err.response?.data?.message || "An error occurred. Please try again."
+        );
+      },
+    });
   };
 
   return (
@@ -169,16 +149,16 @@ const PaymentModal = ({
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
         <div className="flex justify-end gap-3">
-          <Button
-            variant="secondary"
-            onClick={hideModal}
-            disabled={paymentMutation.isPending}
-            type="button"
-          >
+          <Button variant="secondary" onClick={hideModal} type="button">
             Cancel
           </Button>
-          <Button type="submit" disabled={paymentMutation.isPending}>
-            {paymentMutation.isPending
+          <Button
+            type="submit"
+            disabled={
+              isEditMode ? updatePayment.isPending : createPayment.isPending
+            }
+          >
+            {(isEditMode ? updatePayment.isPending : createPayment.isPending)
               ? "Saving..."
               : isEditMode
               ? "Save Changes"
