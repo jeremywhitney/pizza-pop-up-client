@@ -1,31 +1,14 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../hooks/useAuth.js";
+import { usePayments } from "../../hooks/usePayments.js";
 import { useModal } from "../../contexts/ModalContext.jsx";
 import { Pencil, Trash2 } from "lucide-react";
 import Button from "../shared/Button";
-import api from "../../lib/axios";
 
 export const PaymentMethods = () => {
   const { data: auth } = useAuth();
-  const payments = auth?.user?.payments || [];
-  const queryClient = useQueryClient();
+  const { deletePayment } = usePayments();
   const { showModal } = useModal();
-
-  const deletePaymentMutation = useMutation({
-    mutationFn: async (paymentId) => {
-      await api.delete(`/payments/${paymentId}`);
-      return paymentId;
-    },
-    onSuccess: (paymentId) => {
-      queryClient.setQueryData(["auth"], (old) => ({
-        ...old,
-        user: {
-          ...old.user,
-          payments: old.user.payments.filter((p) => p.id !== paymentId),
-        },
-      }));
-    },
-  });
+  const payments = auth?.user?.payments || [];
 
   const formatCardNumber = (number) => `•••• ${number.slice(-4)}`;
 
@@ -58,7 +41,7 @@ export const PaymentMethods = () => {
       component: "DeletePaymentModal",
       props: {
         payment,
-        onConfirm: deletePaymentMutation.mutate,
+        onConfirm: deletePayment.mutate,
       },
     });
   };

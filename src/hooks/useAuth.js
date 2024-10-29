@@ -1,8 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
 
 export const useAuth = () => {
-  return useQuery({
+  const queryClient = useQueryClient();
+
+  const query = useQuery({
     queryKey: ["auth"],
     queryFn: async () => {
       const token = localStorage.getItem("token");
@@ -27,4 +29,24 @@ export const useAuth = () => {
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 30,
   });
+
+  const updateProfile = useMutation({
+    mutationFn: async ({ field, value }) => {
+      const response = await api.patch("/profile/", {
+        [field]: value,
+      });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["auth"], (old) => ({
+        ...old,
+        user: data,
+      }));
+    },
+  });
+
+  return {
+    ...query,
+    updateProfile,
+  };
 };
