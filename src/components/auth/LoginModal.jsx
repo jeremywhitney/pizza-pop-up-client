@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useModal } from "../../contexts/ModalContext";
 import Modal from "../shared/Modal";
@@ -6,6 +7,7 @@ import Button from "../shared/Button";
 import api from "../../lib/axios";
 
 const LoginModal = () => {
+  const navigate = useNavigate();
   const { hideModal } = useModal();
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
@@ -25,6 +27,7 @@ const LoginModal = () => {
       const profileResponse = await api.get("profile");
       return profileResponse;
     },
+    
     onSuccess: (response) => {
       queryClient.setQueryData(["auth"], {
         isAuthenticated: true,
@@ -32,7 +35,15 @@ const LoginModal = () => {
       });
 
       hideModal();
+
+      // Navigate based on user type
+      if (response.data.profile.is_staff) {
+        navigate("/employee_dashboard");
+      } else {
+        navigate("/");
+      }
     },
+
     onError: (error) => {
       setError(
         error.response?.data?.message || "Login failed. Please try again."
