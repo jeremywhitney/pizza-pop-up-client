@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { Eye, Clock } from "lucide-react";
 
 const OrderCard = ({ order, onViewDetails, onUpdateStatus }) => {
-  const formatTime = (dateString) => {
+  const formatDate = (dateString) => {
     return format(new Date(dateString), "MM/d/yy h:mm a");
   };
 
@@ -21,7 +21,7 @@ const OrderCard = ({ order, onViewDetails, onUpdateStatus }) => {
           </p>
           <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
             <Clock className="w-4 h-4" />
-            {formatTime(order.created_date)}
+            {formatDate(order.created_date)}
           </div>
         </div>
         <button
