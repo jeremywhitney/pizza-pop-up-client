@@ -66,6 +66,7 @@ const AddToCartModal = ({
       id: product.id,
       name: product.name,
       price: product.price,
+      image_path: product.image_path,
       quantity: quantity,
       toppings: selectedToppings,
     };

@@ -20,6 +20,7 @@ export const useCartStore = create(
           name: product.name,
           price: parseFloat(product.price),
           quantity: parseInt(product.quantity, 10),
+          image_path: product.image_path,
           toppings: product.toppings.map((t) => ({
             id: t.id,
             name: t.name,

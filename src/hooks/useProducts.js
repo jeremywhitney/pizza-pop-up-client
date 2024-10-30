@@ -20,7 +20,13 @@ export const useProducts = () => {
   });
 
   const updateProduct = useMutation({
-    mutationFn: ({ id, data }) => api.patch(`/products/${id}`, data),
+    mutationFn: ({ id, data }) => {
+      // If image_path is explicitly null, add a flag to remove the image
+      if (data.get("image_path") === null) {
+        data.set("remove_image", "true");
+      }
+      return api.patch(`/products/${id}`, data);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(["products"]);
     },

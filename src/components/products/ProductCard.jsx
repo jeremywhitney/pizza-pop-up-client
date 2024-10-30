@@ -4,9 +4,9 @@ const ProductCard = ({ product, onAddToCart }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="aspect-w-16 aspect-h-9 bg-gray-200">
-        {product.image ? (
+        {product.image_path ? (
           <img
-            src={product.image}
+            src={product.image_path}
             alt={product.name}
             className="w-full h-full object-cover"
           />

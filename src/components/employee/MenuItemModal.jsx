@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, X } from "lucide-react";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
 import { useModal } from "../../contexts/ModalContext";
@@ -29,6 +29,16 @@ const MenuItemModal = ({ item = null }) => {
     if (file) {
       setFormData((prev) => ({ ...prev, image_path: file }));
       setImagePreview(URL.createObjectURL(file));
+
+      // Convert to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setFormData((prev) => ({
+          ...prev,
+          image_path: reader.result, // This will be a base64 string
+        }));
+      };
     }
   };
 
@@ -155,11 +165,23 @@ const MenuItemModal = ({ item = null }) => {
           <div className="mt-2 flex items-center gap-4">
             <div className="relative">
               {imagePreview ? (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="w-24 h-24 rounded-lg object-cover"
-                />
+                <div className="relative">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-24 h-24 rounded-lg object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImagePreview(null);
+                      setFormData((prev) => ({ ...prev, image_path: null }));
+                    }}
+                    className="absolute -top-2 -right-2 bg-red-100 text-red-600 rounded-full p-1 hover:bg-red-200"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
               ) : (
                 <div className="w-24 h-24 rounded-lg bg-gray-100 flex items-center justify-center">
                   <ImagePlus className="w-8 h-8 text-gray-400" />
