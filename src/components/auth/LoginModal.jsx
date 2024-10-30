@@ -27,7 +27,7 @@ const LoginModal = () => {
       const profileResponse = await api.get("profile");
       return profileResponse;
     },
-    
+
     onSuccess: (response) => {
       queryClient.setQueryData(["auth"], {
         isAuthenticated: true,
@@ -79,7 +79,7 @@ const LoginModal = () => {
             name="username"
             value={formData.username}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -94,7 +94,7 @@ const LoginModal = () => {
             name="password"
             value={formData.password}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>

@@ -20,7 +20,7 @@ const Modal = ({ children, title, className = "" }) => {
               </button>
             </Dialog.Close>
           </div>
-          <div className="max-h-[calc(90vh-6rem)] overflow-visible">
+          <div className="max-h-[calc(90vh-6rem)] overflow-y-auto">
             {children}
           </div>
         </Dialog.Content>

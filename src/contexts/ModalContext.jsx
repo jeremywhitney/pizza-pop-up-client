@@ -7,6 +7,7 @@ import PaymentModal from "../components/profile/PaymentModal";
 import OrderDetailsModal from "../components/profile/OrderDetailsModal";
 import OrderConfirmationModal from "../components/cart/OrderConfirmationModal";
 import DeletePaymentModal from "../components/profile/DeletePaymentModal";
+import MenuItemModal from "../components/employee/MenuItemModal";
 
 // Map of available modals
 const MODAL_COMPONENTS = {
@@ -18,6 +19,7 @@ const MODAL_COMPONENTS = {
   OrderDetailsModal,
   OrderConfirmationModal,
   DeletePaymentModal,
+  MenuItemModal,
 };
 
 const ModalContext = createContext(null);

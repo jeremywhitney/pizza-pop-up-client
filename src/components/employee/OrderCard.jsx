@@ -51,7 +51,9 @@ const OrderCard = ({ order, onViewDetails, onUpdateStatus }) => {
       </div>
 
       <div className="flex justify-between items-center mt-4">
-        <span className="text-lg font-medium">${order.total_price}</span>
+        <span className="text-lg font-medium">
+          ${order.total_price.toFixed(2)}
+        </span>
         <div className="flex gap-2">
           {order.status === "PENDING" ? (
             <button

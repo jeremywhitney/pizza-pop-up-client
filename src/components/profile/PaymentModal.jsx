@@ -93,7 +93,7 @@ const PaymentModal = ({
                       merchant_name: e.target.value,
                     }))
                   }
-                  className="pl-10 pr-4 py-2 w-full border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                  className="pl-10 pr-4 py-2 w-full border rounded-lg"
                 >
                   <option value="">Select card type</option>
                   <option value="Visa">Visa</option>
@@ -117,7 +117,7 @@ const PaymentModal = ({
                     account_number: e.target.value,
                   }))
                 }
-                className="px-4 py-2 w-full border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="px-4 py-2 w-full border rounded-lg"
                 placeholder="Enter card number"
                 maxLength={16}
               />
@@ -141,7 +141,7 @@ const PaymentModal = ({
               }
               dateFormat="MM/yyyy"
               showMonthYearPicker
-              className="pl-10 pr-4 py-2 w-full border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              className="pl-10 pr-4 py-2 w-full border rounded-lg"
             />
           </div>
         </div>
