@@ -1,8 +1,9 @@
+import { format } from "date-fns";
 import { Eye, Clock } from "lucide-react";
 
 const OrderCard = ({ order, onViewDetails, onUpdateStatus }) => {
   const formatTime = (dateString) => {
-    return new Date(dateString).toLocaleTimeString();
+    return format(new Date(dateString), "MM/d/yy h:mm a");
   };
 
   return (
