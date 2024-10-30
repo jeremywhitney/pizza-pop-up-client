@@ -78,7 +78,7 @@ const RegisterModal = () => {
               name="first_name"
               value={formData.first_name}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              className="w-full px-3 py-2 border rounded-lg"
               required
             />
           </div>
@@ -96,7 +96,7 @@ const RegisterModal = () => {
               name="last_name"
               value={formData.last_name}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              className="w-full px-3 py-2 border rounded-lg"
               required
             />
           </div>
@@ -112,7 +112,7 @@ const RegisterModal = () => {
             name="username"
             value={formData.username}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -127,7 +127,7 @@ const RegisterModal = () => {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -142,7 +142,7 @@ const RegisterModal = () => {
             name="password"
             value={formData.password}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -160,7 +160,7 @@ const RegisterModal = () => {
             name="phone_number"
             value={formData.phone_number}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -174,7 +174,7 @@ const RegisterModal = () => {
             name="address"
             value={formData.address}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            className="w-full px-3 py-2 border rounded-lg"
             rows={3}
             required
           />

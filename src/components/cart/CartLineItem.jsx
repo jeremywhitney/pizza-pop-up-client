@@ -22,6 +22,7 @@ const CartLineItem = ({ item }) => {
           id: item.id,
           name: item.name,
           price: item.price,
+          image_path: item.image_path,
           category: { name: item.toppings?.length > 0 ? "Pizza" : "" },
         },
         initialQuantity: parseInt(item.quantity, 10),

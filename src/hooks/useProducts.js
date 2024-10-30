@@ -12,6 +12,26 @@ export const useProducts = () => {
     },
   });
 
+  const createProduct = useMutation({
+    mutationFn: (data) => api.post("/products", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+    },
+  });
+
+  const updateProduct = useMutation({
+    mutationFn: ({ id, data }) => {
+      // If image_path is explicitly null, add a flag to remove the image
+      if (data.get("image_path") === null) {
+        data.set("remove_image", "true");
+      }
+      return api.patch(`/products/${id}`, data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+    },
+  });
+
   const toggleAvailability = useMutation({
     mutationFn: (product) =>
       api.patch(`/products/${product.id}`, {
@@ -24,6 +44,8 @@ export const useProducts = () => {
 
   return {
     ...productsQuery,
+    createProduct,
+    updateProduct,
     toggleAvailability: toggleAvailability.mutate,
     isToggling: toggleAvailability.isPending,
   };
