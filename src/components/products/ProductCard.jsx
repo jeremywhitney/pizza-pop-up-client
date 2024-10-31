@@ -3,15 +3,18 @@ import Button from "../shared/Button";
 const ProductCard = ({ product, onAddToCart }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="aspect-w-16 aspect-h-9 bg-gray-200">
+      {/* Fixed aspect ratio container */}
+      <div className="relative pt-[75%]">
+        {" "}
+        {/* 4:3 aspect ratio */}
         {product.image_path ? (
           <img
             src={product.image_path}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="absolute top-0 left-0 w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-100">
             <span className="text-gray-400">No image</span>
           </div>
         )}

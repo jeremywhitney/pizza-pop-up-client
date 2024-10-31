@@ -39,8 +39,6 @@ const LoginModal = () => {
       // Navigate based on user type
       if (response.data.profile.is_staff) {
         navigate("/employee_dashboard");
-      } else {
-        navigate("/");
       }
     },
 
