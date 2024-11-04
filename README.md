@@ -1,16 +1,19 @@
 # Pizza-Pop-Up Web Application
 
-A full-stack web application for a pizza restaurant (Steady Habits Pizza) that allows customers to view the menu, create orders, and manage their profiles.
+A full-stack web application for a pizza restaurant (Steady Habits Pizza) that allows customers to view the menu, create orders, and manage their profiles. Also includes employee-specific views for order, menu, product management.
 
 ## Features
 
-### MVP (In Development)
+### MVP
 - View complete menu of offerings
 - Create, modify, and submit orders
 - Guest cart functionality
 - User authentication
-- User profiles with saved payment methods
-- Order history tracking
+- User profiles with saved payment methods, order history
+
+### Additional Features
+- Employee dashboard with order and menu managers
+- Add/edit menu items
 
 ## Tech Stack
 
@@ -20,7 +23,7 @@ A full-stack web application for a pizza restaurant (Steady Habits Pizza) that a
 - TanStack Query
 - Radix UI
 - Tailwind CSS
-- Zustand (state management)
+- Zustand (cart state management)
 
 ### Backend
 - Django REST Framework
@@ -49,11 +52,10 @@ npm run dev
 ### Project Structure
 src/
 - components/      # Reusable components
+- contexts/        # Modal management
 - routes/          # Page components
 - hooks/           # Custom hooks
-- utils/           # Utility functions
 - lib/             # Configuration files
-- assets/          # Static assets
 
 ### Available Scripts
 ```bash
@@ -70,7 +72,6 @@ npm run preview
 - Preview production build
 
 ### Future Enhancements
-- Employee dashboard
 - Events page
 - Contact Us page
 - About Us page
