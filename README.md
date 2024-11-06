@@ -2,7 +2,7 @@
 
 A full-stack web application for a pizza restaurant (Steady Habits Pizza) that allows customers to view the menu, create orders, and manage their profiles. Also includes employee-specific views for order, menu, product management.
 
-API: [text](https://github.com/jeremywhitney/pizza-pop-up-api)
+**API:** [Pizza-Pop-Up API](https://github.com/jeremywhitney/pizza-pop-up-api)
 
 ## Features
 
