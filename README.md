@@ -80,3 +80,20 @@ npm run preview
 - Feedback form
 - Customer Favorites
 - Guest checkout
+
+## Demo Access
+You can explore the application using these demo accounts:
+
+### Customer View
+To experience the customer interface:
+- Username: demo_user  
+- Password: pizzatime
+- Includes: Sample order history, saved payment methods
+
+### Staff View
+To access staff features:
+- Username: demo_staff
+- Password: pizzatime
+- Enables: Order management, employee functions
+
+Feel free to log in with either account to explore different aspects of the application.
