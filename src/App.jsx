@@ -14,11 +14,6 @@ import Dashboard from "./routes/Dashboard";
 const queryClient = new QueryClient();
 setupInterceptors(queryClient);
 
-console.log('Environment check:', {
-  direct: import.meta.env.VITE_API_URL,
-  allEnv: import.meta.env
-});
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>

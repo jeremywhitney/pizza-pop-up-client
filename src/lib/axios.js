@@ -1,26 +1,10 @@
 import axios from "axios";
 
-// console.log('API URL:', process.env.VITE_API_URL);
-
-// const api = axios.create({
-//   baseURL: process.env.VITE_API_URL,
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
-console.log('Before creating api:', {
-  envUrl: import.meta.env.VITE_API_URL
-});
-
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,  // changed from process.env
   headers: {
       "Content-Type": "application/json",
   },
-});
-
-console.log('After creating api:', {
-  baseURL: api.defaults.baseURL
 });
 
 // Function to set up interceptors that takes queryClient as a parameter

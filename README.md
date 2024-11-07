@@ -97,3 +97,13 @@ To access staff features:
 - Enables: Order management, employee functions
 
 Feel free to log in with either account to explore different aspects of the application.
+
+## Deployment
+The application is deployed on DigitalOcean App Platform.
+
+### Environment Variables
+Required for production:
+```env
+VITE_API_URL=https://your-api-domain.ondigitalocean.app/
+```
+Note: Environment variables in Vite must be accessed using `import.meta.env.VITE_API_URL`
