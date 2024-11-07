@@ -4,13 +4,21 @@ import api from "../lib/axios";
 export const useProducts = () => {
   const queryClient = useQueryClient();
 
+  // const productsQuery = useQuery({
+  //   queryKey: ["products"],
+  //   queryFn: async () => {
+  //     const { data } = await api.get("/products");
+  //     return data;
+  //   },
+  // });
   const productsQuery = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
+      console.log('Making products request with baseURL:', api.defaults.baseURL);
       const { data } = await api.get("/products");
       return data;
     },
-  });
+});
 
   const createProduct = useMutation({
     mutationFn: (data) => api.post("/products", data),
